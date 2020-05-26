@@ -1,0 +1,26 @@
+£$style
+    img:align=CENTER?captionStyle=Intense Quote?fnsdjfnsjk=fnjkfnsdjk
+    clip:align=CENTER?style=Intense Quote
+    ol:style=List Bullet
+£$style
+
+£$p?clip
+    salut ca doit être centré ca !
+£$p
+
+
+£$img:path:img.jpg:width:16:border:5?plop salut c'est la légende £$img
+£$li plop £$li
+£$li £$b plip £$b £$li
+£$li £$i pupe £$i £$li
+
+
+£$title1 salut les copains £$title1
+    £$title2 Salut les autres £$title2
+        £$p
+            plop les copains
+        £$p
+        
+        
+
+
