@@ -1,25 +1,44 @@
 £$style
-    img:align=CENTER?captionStyle=Intense Quote?fnsdjfnsjk=fnjkfnsdjk
+    img:align=CENTER?caption=Intense Quote
     clip:align=CENTER?style=Intense Quote
     ol:style=List Bullet
+    cam:plop=plip
 £$style
 
-£$p?clip
-    salut ca doit être centré ca !
-£$p
+£$table:l=3:c=4:caption=Salut_c'est_la_legende
+    £$img:path=docx/image/img.jpg:width=1:caption=0 Salut c'est la leg £$img | £$_i salut £$_i £$p plop £$p | £$b 1ccccc2 £$b | £$b 1ddddd2 £$b
+    £$b 1aaaaa2 £$b | £$b 1bbbbb2 £$b | £$b 1ccccc2 £$b | £$b 1ddddd2 £$b
+    £$p baa £$p | £$p baaa £$p | £$p ba £$p | £$p b £$p 
+£$table
 
-
-£$img:path:img.jpg:width:16:border:5?plop salut c'est la légende £$img
 £$li plop £$li
 £$li £$b plip £$b £$li
-£$li £$i pupe £$i £$li
+£$li £$_i pupe £$_i £$li
 
 
-£$title1 salut les copains £$title1
-    £$title2 Salut les autres £$title2
+
+
+£$p?style=Intense_Quote Intense quote ca £$p
+
+£$code
+    salut ca c'est du code
+    £$_i ca ca doit être en dessous en italic £$_i
+£$code
+
+£$img:path=docx/image/img.jpg:width=16?plop?salut salut c'est la légende £$img
+
+
+£$code salut moi c'est le code ! £$code
+
+
+
+£$title:rank=1 salut les copains £$title
+    £$title:rank=2 Salut les autres £$title
         £$p
-            plop les copains
+            £$b plop les copains £$b
         £$p
+        £$p £$b hello all £$b £$p   
+
         
         
 
