@@ -5,6 +5,8 @@
     cam:plop=plip
 £$style
 
+£$li?size=19 £$b hello all £$b £$li
+
 £$table:l=3:c=4:caption=Salut_c'est_la_legende
     £$img:path=docx/image/img.jpg:width=1:caption=0 Salut c'est la leg £$img | £$_i salut £$_i £$p plop £$p | £$b 1ccccc2 £$b | £$b 1ddddd2 £$b
     £$b 1aaaaa2 £$b | £$b 1bbbbb2 £$b | £$b 1ccccc2 £$b | £$b 1ddddd2 £$b
@@ -14,8 +16,6 @@
 £$li plop £$li
 £$li £$b plip £$b £$li
 £$li £$_i pupe £$_i £$li
-
-
 
 
 £$p?style=Intense_Quote Intense quote ca £$p
@@ -35,9 +35,12 @@
 £$title:rank=1 salut les copains £$title
     £$title:rank=2 Salut les autres £$title
         £$p
-            £$b plop les copains £$b
+            £$b plop les copains £$b njdknfjkd  ndfsfsdjhf njkdsfnsdjk
         £$p
-        £$p £$b hello all £$b £$p   
+                £$p
+            £$b plop les copains £$b njdknfjkd  ndfsfsdjhf njkdsfnsdjk
+        £$p
+  
 
         
         

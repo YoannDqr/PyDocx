@@ -1,11 +1,13 @@
 from docx.oxml import OxmlElement, ns
 from PIL import Image, ImageOps
+from docx.enum.style import WD_STYLE_TYPE
 
 
 def get_subdocument(document, parents_node):
     doc = document
     for elt in parents_node:
         if ('l' in elt) and ('c' in elt):
+            a = doc.tables[-1].rows[elt['l']].cells
             doc = doc.tables[-1].rows[elt['l']].cells[elt['c']]
     return doc
 
@@ -58,10 +60,40 @@ def add_picture(document, path="", caption="", width=None, border=0, caption_swi
     return None
 
 
-def apply_legacy_style(elt, styles):
-    for opt in styles:
-        try:
-            getattr(elt, opt['style'])
-            setattr(elt, opt['style'], True)
-        except:
-            pass
+def apply_legacy_style(elt, parents_node):
+    for opt in parents_node:
+        for key, value in opt.items():
+            if 'run' in key:
+                try:
+                    getattr(elt, key.split('run_')[1])
+                    setattr(elt, key.split('run_')[1], int(value))
+                except AttributeError:
+                    pass
+                except ValueError:
+                    setattr(elt, key.split('run_')[1], value)
+
+
+def create_paragraph_style(paragraph):
+    style = paragraph.style
+    if style.builtin:
+        i = 0
+        success = False
+        while success is not True:
+            try:
+                new_style = paragraph.part.document.styles.add_style('tmp_style{}'.format(i), WD_STYLE_TYPE.PARAGRAPH)
+                success = True
+            except:
+                i += 1
+        new_style.base_style = style
+    else:
+        new_style = style
+    return new_style
+
+
+def progress_bar(current, total, title="", barLength=20):
+    percent = float(current) * 100 / total
+    arrow = '-' * int(percent / 100 * barLength - 1) + '>'
+    spaces = ' ' * (barLength - len(arrow))
+
+    print(title + ' Progress: [%s%s] %d %%' % (arrow, spaces, percent), end='\r')
+

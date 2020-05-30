@@ -3,3 +3,4 @@ venv
 *.docx
 *.jpg
 *.png
+__pycache__

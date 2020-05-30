@@ -47,9 +47,9 @@ def styled_string(document, option, value, parents_node, preprocessing=False):
 def p(document, option, value, parents_node, preprocessing=False):
     if preprocessing:
         if type(document) == _Cell and document.paragraphs[-1].text == "":
-            current = document.paragraphs[-1]
+            document.paragraphs[-1]
         else:
-            current = document.add_paragraph('')
+            document.add_paragraph('')
 
     else:
         document.paragraphs[-1].add_run(value)
@@ -61,22 +61,15 @@ def table(document, option, value, parents_node, preprocessing=False):
             document.add_table(rows=int(option['l']), cols=int(option['c']))
             if 'caption' in option:
                 add_caption(document, 'Table', option['caption'])
-            option['c'] = 0
-            option['l'] = 0
-            return None
-        else:
-            return None
+            option['c'], option['l'] = 0, 0
     else:
-        table = document.tables[-1]
         split_cells = option['delimiter']
         elt = value.strip()
-        only_separator = elt == split_cells
-        if only_separator:
+        if elt == split_cells:
             option['c'] += 1
 
-        if option['c'] == len(table.rows[0].cells) - 1 and not (elt == split_cells):
+        if option['c'] == len(document.tables[-1].rows[0].cells) - 1 and not (elt == split_cells):
             option['l'] += 1
             option['c'] = 0
-        return None
 
 
