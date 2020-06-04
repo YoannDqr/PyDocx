@@ -3,46 +3,76 @@
     clip:align=CENTER?style=Intense Quote
     ol:style=List Bullet
     cam:plop=plip
-£$style
+$£style
 
-£$li?size=19 £$b hello all £$b £$li
-
-£$table:l=3:c=4:caption=Salut_c'est_la_legende
-    £$img:path=docx/image/img.jpg:width=1:caption=0 Salut c'est la leg £$img | £$_i salut £$_i £$p plop £$p | £$b 1ccccc2 £$b | £$b 1ddddd2 £$b
-    £$b 1aaaaa2 £$b | £$b 1bbbbb2 £$b | £$b 1ccccc2 £$b | £$b 1ddddd2 £$b
-    £$p baa £$p | £$p baaa £$p | £$p ba £$p | £$p b £$p 
-£$table
-
-£$li plop £$li
-£$li £$b plip £$b £$li
-£$li £$_i pupe £$_i £$li
+£$part
+£$p
+    £$i hey c'est en italic $£i
+    Salut ca va comment ?
+$£p
 
 
-£$p?style=Intense_Quote Intense quote ca £$p
+£$nmap:path=docx/other/result.nmap Résultat nmap $£nmap
 
-£$code
-    salut ca c'est du code
-    £$_i ca ca doit être en dessous en italic £$_i
-£$code
+£$ssl:path=docx/other/testssl.txt Liste des ciphers $£ssl
 
-£$img:path=docx/image/img.jpg:width=16?plop?salut salut c'est la légende £$img
+£$table:l=5:c=2:caption=salut?cellColor=*-0-1-2/*-1#000000?align=CENTER
+    £$b plop $£b | £$b plip $£b 
+    £$p salut $£p | £$b a $£b 
+$£table
+
+£$li?color=#0?size=19 £$b hello all $£b $£li
+
+£$p
+    £$i hey c'est en italic $£i
+$£p
+$£part
+
+£$part
+£$p
+    £$i hey c'est en italic $£i
+    Salut ca va comment ?
+$£p
 
 
-£$code salut moi c'est le code ! £$code
+£$nmap:path=docx/other/result.nmap Résultat nmap $£nmap
+
+£$ssl:path=docx/other/testssl.txt Liste des ciphers $£ssl
+
+£$table:l=5:c=2:caption=salut?cellColor=*-0-1-2/*-1#000000?align=CENTER
+    £$b plop $£b | £$b plip $£b 
+    £$p salut $£p | £$b a $£b 
+$£table
+
+£$li?color=#0?size=19 £$b hello all $£b $£li
+
+£$p
+    £$i hey c'est en italic $£i
+$£p
+$£part
+
+£$part
+£$p
+    £$i hey c'est en italic $£i
+    Salut ca va comment ?
+$£p
 
 
+£$nmap:path=docx/other/result.nmap Résultat nmap $£nmap
 
-£$title:rank=1 salut les copains £$title
-    £$title:rank=2 Salut les autres £$title
-        £$p
-            £$b plop les copains £$b njdknfjkd  ndfsfsdjhf njkdsfnsdjk
-        £$p
-                £$p
-            £$b plop les copains £$b njdknfjkd  ndfsfsdjhf njkdsfnsdjk
-        £$p
-  
+£$ssl:path=docx/other/testssl.txt Liste des ciphers $£ssl
 
-        
-        
+£$table:l=5:c=2:caption=salut?cellColor=*-0-1-2/*-1#000000?align=CENTER
+    £$b plop $£b | £$b plip $£b 
+    £$p salut $£p | £$b a $£b 
+$£table
+
+£$li?color=#0?size=19 £$b hello all $£b $£li
+
+£$p
+    £$i hey c'est en italic $£i
+$£p
+$£part
+
 
 

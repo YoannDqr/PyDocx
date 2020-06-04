@@ -3,6 +3,22 @@ from PIL import Image, ImageOps
 from docx.enum.style import WD_STYLE_TYPE
 
 
+def get_cells_coordinate(table, area):
+    # Return the raw and columns indexes given by the style string used by tables !11-15/*-12-15#...
+    raw_rows, raw_columns = area.split('/')
+
+    if '*' in raw_rows:  # All except those explicitly given
+        rows = [i for i in range(len(table.rows)) if not (str(i) in raw_rows.split('-'))]
+    else:
+        rows = [int(row) for row in raw_rows.split('-')]
+    if '*' in raw_columns:
+        columns = [i for i in range(len(table.columns)) if not (str(i) in raw_columns.split('-'))]
+    else:
+        columns = [int(column) for column in raw_columns.split('-')]
+
+    return rows, columns
+
+
 def get_subdocument(document, parents_node):
     doc = document
     for elt in parents_node:
@@ -50,7 +66,7 @@ def add_picture(document, path="", caption="", width=None, border=0, caption_swi
         add_border(tmp_path, final_path, border)
         tmp_path = final_path
 
-    if document.paragraphs[-1].text != '':
+    if len(document.paragraphs) == 0 or document.paragraphs[-1].text != '':
         run = document.add_paragraph('').add_run()
     else:
         run = document.paragraphs[-1].add_run()

@@ -1,6 +1,12 @@
 from docx import Document
 from settings import *
 from tools import get_subdocument, progress_bar
+import re
+import multiprocessing
+from docxcompose.composer import Composer
+import os
+import time
+import sys
 
 
 def generate_graph(line, parent=None):
@@ -98,8 +104,7 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
             try:
                 style_functions[option_name][key](document, value)
             except KeyError:
-                print(
-                    "[W] - Style property `{}={}` is not implemented for element `{}`".format(key, value, option_name))
+                print(  "[W] - Style property `{}={}` is not implemented for element `{}`".format(key, value, option_name))
 
     if parents_node is None:
         parents_node = []
@@ -111,12 +116,18 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
     styles = graph[0]['style']
 
     subdoc = get_subdocument(document, parents_node)
-
-    tags_functions[option['name']](subdoc, option, None, parents_node, preprocessing=True)
+    try:
+        tags_functions[option['name']](subdoc, option, None, parents_node, preprocessing=True)
+    except KeyError:
+        print('The tag {} is not recognized.'.format(option['name']))
+        exit()
     for elt in graph[1:]:
         if type(elt) == str:
-
-            tags_functions[option['name']](subdoc, option, elt, parents_node + [option])
+            try:
+                tags_functions[option['name']](subdoc, option, elt, parents_node + [option])
+            except KeyError:
+                print('The tag {} is not recognized.'.format(option['name']))
+                exit()
             apply_global_style(subdoc, classes + [option['name']], gstyle, styles)
 
         elif type(elt) == list:
@@ -127,8 +138,12 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
 def initial_parsing(initial_data):
     def process_aliases(data):
         for key, value in alias.items():
-            data = data.replace(split_char+key, split_char+value[0])
-            data = data.replace(split_char_end+key, split_char_end+value[1])
+
+            pattern = re.compile(rf'({re.escape(split_char)}){key}([\?:\s\n])')
+            data = pattern.sub(rf'\1{value[0]}\2', data)
+
+            pattern = re.compile(rf'({re.escape(split_char_end)}){key}([\?:\s\n])')
+            data = pattern.sub(rf'\1{value[1]}\2', data)
 
         return data
 
@@ -151,35 +166,81 @@ def initial_parsing(initial_data):
                         style[key.strip()] = {prop: val}
             else:
                 data += elt.lstrip()
+
     data = process_aliases(data)
+
     return style, data + split_char + "p " + split_char_end + "p"
 
 
-def doc_creation(doc, graph_data):
-    maxi = len(graph_data)
+def task(id, graph, gstyle):
+    doc = Document('docx/template.docx')
+    p = doc.paragraphs[0]._element
+    p.getparent().remove(p)
+    p._p = p._element = None
+    graph2doc(doc, graph, None, gstyle=gstyle)
+    doc.save('docx/tmp/part{}.docx'.format(id))
+
+
+def gen_doc(graph_data, style, template=None, max_processes=os.cpu_count()+1):
+    if template is None:
+        doc = Document()
+    else:
+        doc = Document(template)
+
+    composer = Composer(doc)
+    workers = []
     progress = 0
-    for elt in graph_data:
-        progress_bar(progress, maxi, title='Doc creation')
-        graph2doc(doc, elt, None, gstyle=style)
+    for i in range(len(graph_data)):
+        process = multiprocessing.Process(target=task, args=(i, graph_data[i], style))
+        workers.append(process)
+        process.start()
+        if i == max_processes:
+            for elt in workers:
+                elt.join()
+                composer.append(Document('docx/tmp/part{}.docx'.format(progress)))
+                progress += 1
+            workers = []
+    for elt in workers:
+        elt.join()
+        composer.append(Document('docx/tmp/part{}.docx'.format(progress)))
         progress += 1
-    progress_bar(progress, maxi, title='Doc creation')
+
+    composer.save('docx/final.docx')
+    print("Document generated in docx/final.docx.\n")
 
 
-doc = Document('docx/template.docx')
-file = open("template2.dqr", encoding="utf-8")
-data = file.readlines()
+def translate_document(path, template=None, encoding='utf-8'):
+    file = open(path, encoding=encoding)
+    style, data = initial_parsing(file.readlines())
+    file.close()
+    graph_data = generate_graph(data)
+    gen_doc(graph_data, style, template)
 
-style, data = initial_parsing(data)
-data = data
-graph_data = generate_graph(data)
-doc_creation(doc, graph_data)
 
-i = 0
-save = False
-while save is not True:
-    try:
-        doc.save('docx/demo{}.docx'.format(i))
-        print('Document generated in docx/demo{}.docx'.format(i))
-        save = True
-    except:
-        i += 1
+if __name__ == '__main__':
+    if len(sys.argv) == 2:
+        template = None
+        file = sys.argv[1]
+    elif len(sys.argv) == 3:
+        file = sys.argv[1]
+        template = sys.argv[2]
+    else:
+        file = 'template.dqr'
+        template = 'template.docx'
+
+    if os.path.isfile(file) is not True:
+        print("The file {} does not exist...".format(file))
+        exit()
+    if os.path.isfile(template) is not True:
+        print("The file {} does not exist...".format(template))
+        exit()
+    if os.path.isdir('docx/tmp') is not True:
+        os.mkdir('docx/tmp')
+
+    start_time = time.time()
+    translate_document(file, template)
+    for elt in os.scandir('docx/tmp'):
+        os.remove(elt)
+    print("Multiprocess runtime : %s seconds" % (time.time() - start_time))
+
+

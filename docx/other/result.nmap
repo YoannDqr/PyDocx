@@ -1,0 +1,21 @@
+# Nmap 7.80 scan initiated Sun May 31 13:59:23 2020 as: nmap -sS -oA plop.txt 51.15.11.152
+Nmap scan report for yoanndequeker.me (51.15.11.152)
+Host is up (0.024s latency).
+Not shown: 986 filtered ports
+PORT      STATE  SERVICE
+22/tcp    open   ssh
+80/tcp    open   http
+443/tcp   open   https
+9091/tcp  open   xmltec-xmlmail
+49158/tcp closed unknown
+50006/tcp closed unknown
+50300/tcp closed unknown
+50389/tcp closed unknown
+51103/tcp closed unknown
+51493/tcp closed unknown
+54328/tcp closed unknown
+56737/tcp closed unknown
+61532/tcp closed unknown
+65389/tcp closed unknown
+
+# Nmap done at Sun May 31 13:59:35 2020 -- 1 IP address (1 host up) scanned in 11.78 seconds
