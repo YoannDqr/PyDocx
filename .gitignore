@@ -1,6 +1,5 @@
 venv
 .idea
 *.docx
-*.jpg
-*.png
 __pycache__
+docx/image/*
