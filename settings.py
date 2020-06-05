@@ -113,12 +113,4 @@ alias = {
     }),
 }
 
-constraints_tags = [
-    'test'
-]
-
-constraints_schem = {
-    'test': ['intro', 'test', 'conclusion']
-}
-
 
