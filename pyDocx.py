@@ -18,16 +18,16 @@ def generate_graph(line, parent=None):
         index = 0
         tag_name = ""
         first = True
-        if split_class in option or split_options in option:
+        if SPLIT_CLASS in option or SPLIT_OPTION in option:
             for i in range(len(option)):
-                if option[i] == split_class or option[i] == split_options:
+                if option[i] == SPLIT_CLASS or option[i] == SPLIT_OPTION:
                     if first:
                         tag_name = option[:i]
                         first = False
                     else:
                         result[key].append(option[index:i])
                     index = i + 1
-                    key = option[i] == split_class
+                    key = option[i] == SPLIT_CLASS
 
             result[key].append(option[index:])
         else:
@@ -38,14 +38,14 @@ def generate_graph(line, parent=None):
         classes = []
 
         for elt in option_args:
-            splitted = elt.split(split_options_value)
+            splitted = elt.split(SPLIT_OPTION_VALUE)
             if len(splitted) > 1:
-                options[splitted[0]] = " ".join(splitted[1].split(option_space_char))
+                options[splitted[0]] = " ".join(splitted[1].split(SPACE_CHAR))
 
         for elt in raw_classes:
-            splitted = elt.split(split_style_value)
+            splitted = elt.split(SPLIT_STYLE_VALUE)
             if len(splitted) == 2:
-                styles[splitted[0]] = " ".join(splitted[1].split(option_space_char))
+                styles[splitted[0]] = " ".join(splitted[1].split(SPACE_CHAR))
             else:
                 classes.append(elt)
 
@@ -54,19 +54,19 @@ def generate_graph(line, parent=None):
     if parent is None:
         parent = []
     result = []
-    index = line.find(split_char)
+    index = line.find(TAG_CHAR)
     while index != -1:
         option_end = line.find(' ', index)
         tmp = line.find('\n', index)
         if tmp < option_end and tmp != -1:
             option_end = tmp
 
-        option, classes, styles = process_option(line[index + len(split_char): option_end])
+        option, classes, styles = process_option(line[index + len(TAG_CHAR): option_end])
 
-        end_index = line.find(split_char_end + option['name'], index + 1)
+        end_index = line.find(TAG_CHAR_END + option['name'], index + 1)
         subline = line[option_end + 1:end_index - 1]
-        while subline.count(split_char+option['name']) != subline.count(split_char_end+option['name']):
-            end_index = line.find(split_char_end + option['name'], index + 1 + end_index)
+        while subline.count(TAG_CHAR + option['name']) != subline.count(TAG_CHAR_END + option['name']):
+            end_index = line.find(TAG_CHAR_END + option['name'], index + 1 + end_index)
             subline = line[option_end + 1:end_index - 1]
 
         new_parent = parent + [option]
@@ -77,11 +77,11 @@ def generate_graph(line, parent=None):
             result += [line[:index]] + [
                 [node_header] + generate_graph(subline, parent=new_parent)]
 
-        if end_index + len(split_char) + len(option['name']) < len(line):
-            line = line[end_index + len(split_char) + len(option['name']):]
+        if end_index + len(TAG_CHAR) + len(option['name']) < len(line):
+            line = line[end_index + len(TAG_CHAR) + len(option['name']):]
         else:
             line = ''
-        index = line.find(split_char)
+        index = line.find(TAG_CHAR)
 
     if line != '':
         result += [line]
@@ -96,14 +96,14 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
                 for key, value in gstyle[elt].items():
                     if not (key in inline_style):
                         try:
-                            style_functions[option_name][key](document, value)
+                            STYLE_FUNCTIONS[option_name][key](document, value)
                         except KeyError:
                             print("[W] - Style property `{}={}` is not implemented for element `{}`".format(key, value,
                                                                                                             option_name))
 
         for key, value in inline_style.items():
             try:
-                style_functions[option_name][key](document, value)
+                STYLE_FUNCTIONS[option_name][key](document, value)
             except KeyError:
                 print("[W] - Style property `{}={}` is not implemented for element `{}`".format(key, value, option_name))
 
@@ -118,7 +118,7 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
 
     subdoc = get_subdocument(document, parents_node)
     try:
-        tags_functions[option['name']](subdoc, option, None, parents_node, preprocessing=True)
+        TAGS_FUNCTIONS[option['name']](subdoc, option, None, parents_node, preprocessing=True)
     except KeyError:
         print('The tag {} is not recognized.'.format(option['name']))
         exit()
@@ -126,7 +126,7 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
         # If the function reach a leave
         if type(elt) == str:
             try:
-                tags_functions[option['name']](subdoc, option, elt, parents_node + [option])
+                TAGS_FUNCTIONS[option['name']](subdoc, option, elt, parents_node + [option])
             except KeyError:
                 print('The tag {} is not recognized.'.format(option['name']))
                 exit()
@@ -139,12 +139,12 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
 
 def initial_parsing(initial_data):
     def process_aliases(data):
-        for key, value in alias.items():
+        for key, value in ALIAS.items():
 
-            pattern = re.compile(rf'({re.escape(split_char)}){key}([\?:\s\n])')
+            pattern = re.compile(rf'({re.escape(TAG_CHAR)}){key}([\?:\s\n])')
             data = pattern.sub(rf'\1{value[0]}\2', data)
 
-            pattern = re.compile(rf'({re.escape(split_char_end)}){key}([\?:\s\n])')
+            pattern = re.compile(rf'({re.escape(TAG_CHAR_END)}){key}([\?:\s\n])')
             data = pattern.sub(rf'\1{value[1]}\2', data)
 
         return data
@@ -154,14 +154,14 @@ def initial_parsing(initial_data):
     keep_style = False
     for elt in initial_data:
         if elt != '\n':
-            if split_char + 'style' in elt:
+            if TAG_CHAR + 'style' in elt:
                 keep_style = True
-            elif split_char_end + 'style' in elt:
+            elif TAG_CHAR_END + 'style' in elt:
                 keep_style = False
             elif keep_style:
-                key, value = elt.split(split_style)
-                for style_opt in value.strip().split(split_style_props):
-                    prop, val = style_opt.split(split_style_value)
+                key, value = elt.split(SPLIT_STYLE)
+                for style_opt in value.strip().split(SPLIT_STYLE_PROPS):
+                    prop, val = style_opt.split(SPLIT_STYLE_VALUE)
                     try:
                         style[key.strip()][prop] = val
                     except:
@@ -171,7 +171,7 @@ def initial_parsing(initial_data):
 
     data = process_aliases(data)
 
-    return style, data + split_char + "p " + split_char_end + "p"
+    return style, data + TAG_CHAR + "p " + TAG_CHAR_END + "p"
 
 
 def task(id, graph, gstyle):
@@ -228,7 +228,7 @@ if __name__ == '__main__':
         template = sys.argv[2]
     else:
         file = 'template.dqr'
-        template = 'template.docx'
+        template = 'docx/template.docx'
 
     if os.path.isfile(file) is not True:
         print("The file {} does not exist...".format(file))
