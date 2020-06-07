@@ -190,7 +190,7 @@ these listed.
 For example, the following code `*-1/*#CENTER` will center all cells except
 the first row.
 The syntax is the same for the three properties `cellAlign`, `cellColor`.
-The only difference is the value set after the `#`.
+
 The `merge` property accept as value the following syntax :
 ```dqr
 row-col/row1-col1
