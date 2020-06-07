@@ -13,9 +13,22 @@ For example, generating table from data stored in a file, automatically
 applied the same style to many Word elements as set up image borders, 
 captions etc... 
 
-## Structure of the project
+# Table of content
+1. [Structure of the project](#structure)
+    1. [Abstract syntax tree](#AST)
+    2. [tags.py](#tags_file)
+    3. [styles.py](#styles_file)
+    4. [settings.py](#settings_file)
+        1. [Tags customization](#tags_custo)
+        2. [Styles customization](#style_custo)
+        3. [Alias](#alias)
+        4. [Tags inheritance](#inheritance)
+        5. [Syntax customization](#syntax_custo)
+    5. [Global style and classes](#global_style)
+2. [VsCode extension](#vscode)
+## Structure of the project <a name="structure"></a>
 
-### Abstract syntax tree
+### Abstract syntax tree <a name="AST"></a>
 To generate the word document, the user must write a text file 
 following a syntax he can totally customized. The syntax is based
 on tags. A tag is just a keyword preceded by a special symbol.
@@ -76,7 +89,7 @@ Literally everything can be modified.
 
 To make it easier, the project is split in different files :
 
-### tags.py
+### tags.py <a name="tags_file"></a>
 ___
 This file compiles python functions related to a tag.
 For example, if a paragraph is defined by the tag `£$p`,
@@ -121,7 +134,7 @@ Here, the preprocessing flag is used to generate the new paragraph,
 then, once the paragraph is created, the function will be used to add
 the value to the brand new paragraph.
 
-### styles.py
+### styles.py <a name="styles_file"></a>
 ___
 Functions defined in this file will handle style of element whathever
 it is inline style or style defined by classes.
@@ -145,12 +158,12 @@ def paragraph_align(paragraph, value):
         elt.alignment = WD_ALIGN_PARAGRAPH.__dict__[value]
 ```
  
- ### settings.py
- ---
+ ### settings.py <a name="settings_file"></a>
+ ___
  This file is used to map all functions defined in tags.py, style.py
  and the tag name.
  
- #### Tags customization
+ #### Tags customization <a name="tags_custo"></a>
  The mapping done between the tag name and his function is done
  in the dictionary `tags_function`.
  For example, the following code :
@@ -161,7 +174,7 @@ tags_function = {
  ``` 
 This code maps the `tags_function_for_paragraph` to the tag `p`.
 
-#### Styles customization
+#### Styles customization <a name="style_custo"></a>
 Style's properties are mapped with the `style_functions` dictionary.
 This dictionary is defined as followed:
 ```python
@@ -172,7 +185,7 @@ style_functions = {
 }
 ```
 
-#### Alias
+#### Alias <a name="alias"></a>
 Alias are tags writing shortcut. For example, if you know that all
 image of your document must follow the same style or options, it is
 possible to define alias.
@@ -191,7 +204,7 @@ alias = {
 }
 ```
 
-#### Tags inheritance
+#### Tags inheritance <a name="inheritance"></a>
 Sometime new tags will be defined, but styles that can be applied to this
 new tag are the same than the one applied for another tag.
 To avoid repeating every definition of the style for this new tag,
@@ -208,7 +221,7 @@ inheritance([
 ])
 ```
  
-#### Syntax customization
+#### Syntax customization <a name="syntax_custo"></a>
  Moreover, it is in this file that every constant used can be 
  customized :
  ```dqr
@@ -224,7 +237,7 @@ split_cells = '|'
 option_space_char = '_'
  ```
 
-### Global style and classes
+### Global style and classes <a name="global_style"></a>
 It is possible to define global style in the text file using the tag `style`.
 These style can be applied to all character sharing the same name or the same class.
 For example, the following code :
@@ -242,4 +255,14 @@ With this code, only the first image will be centered because it
 has the class `fancy_img`.
 However, every paragraph defined by the tag `p` will be aligned to the left.
  
- 
+## VsCode extension <a name="vscode"></a>
+To make easier the writing of text file, an extension for Visual Studio Code is 
+supplied.
+
+The extension is in the folder `dqrlanguage` and can be added to the
+directory `.vscode`.
+
+The extension provides syntax highlighting, some code snippet etc...
+However, the visual extension is not linked to the `settings.py` file, thus,
+if any change is made in the file, the changeset must also be referred 
+in all files of the extension.
