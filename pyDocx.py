@@ -16,6 +16,7 @@ def generate_graph(line, parent=None):
         result = (option_args, raw_classes)
         key = True
         index = 0
+        tag_name = ""
         first = True
         if split_class in option or split_options in option:
             for i in range(len(option)):
@@ -104,7 +105,7 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
             try:
                 style_functions[option_name][key](document, value)
             except KeyError:
-                print(  "[W] - Style property `{}={}` is not implemented for element `{}`".format(key, value, option_name))
+                print("[W] - Style property `{}={}` is not implemented for element `{}`".format(key, value, option_name))
 
     if parents_node is None:
         parents_node = []
@@ -122,6 +123,7 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
         print('The tag {} is not recognized.'.format(option['name']))
         exit()
     for elt in graph[1:]:
+        # If the function reach a leave
         if type(elt) == str:
             try:
                 tags_functions[option['name']](subdoc, option, elt, parents_node + [option])
@@ -129,9 +131,9 @@ def graph2doc(document, graph, current, gstyle=None, parents_node=None):
                 print('The tag {} is not recognized.'.format(option['name']))
                 exit()
             apply_global_style(subdoc, classes + [option['name']], gstyle, styles)
-
         elif type(elt) == list:
             apply_global_style(subdoc, classes + [option['name']], gstyle, styles)
+            # Recursively parse sons trees
             graph2doc(document, elt, current, gstyle=gstyle, parents_node=parents_node + [option])
 
 

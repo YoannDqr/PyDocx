@@ -1,0 +1,31 @@
+{
+    "name": "dqrlanguage",
+    "displayName": "DqrLanguage",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.45.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "dqr",
+            "aliases": ["dqr", "dqr"],
+            "extensions": [".dqr"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "dqr",
+            "scopeName": "source.dqr",
+            "path": "./syntaxes/dqr.tmLanguage.json"
+        }],
+        "snippets": [
+            {
+                "language": "dqr",
+                "path": "./snippets/snippets.code-snippets"
+            }
+        ]
+    }
+}

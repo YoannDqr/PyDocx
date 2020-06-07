@@ -1,0 +1,46 @@
+£$title1 This is a title1 £$title1
+
+£$title2 This is a title2 £$title2
+
+£$title3 This is a title3 £$title3
+
+£$img:path:img.png Legend of the figure £$img
+
+£$p
+    First line of paragraph
+    £$i Using Italic £$i
+    £$b Using Bold £$b
+    End of the paragraph
+£$p
+fndsjkfnsdjkfndsjk
+£$li element 1 £$li
+£$style
+    plop
+£$style
+
+
+£$li £$b element 2 in bold £$b £$li
+£$li £$i element 3 in italic £$i £$li
+
+£$li element 4 £$li
+
+£$title1 Test £$title1
+    £$p
+        content of the paragraphe
+    £$p
+    £$img:path:img.png salut c'est la légende £$img
+    £$li plop £$li
+    £$li £$b plip £$b £$li
+    £$li £$i pupe £$i £$li
+
+
+
+
+
+
+
+
+
+
+
+

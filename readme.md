@@ -41,7 +41,7 @@ An example of text file could be :
 This text document will be used to generate the abstract language tree (AST).
 In the AST, nodes are tag's name, option, style and class. 
 To explain these notions, the line corresponding to the table definition
-used in the `Code example 1`.
+used in the `Code example 1` will be taken as example.
 
 - The name of the tag is the value of the tag, so here `table`
 - The option of the tag are value values which will affect the design

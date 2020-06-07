@@ -1,0 +1,66 @@
+{
+    "inline": {
+		"prefix": ["£$", "$£"],
+		"body": [
+            "£\\$${1:option} ${2:content} \\$£$1",
+            "$0",
+		],
+		"description": "paragraph"
+    },
+    "paragraph": {
+		"prefix": ["£","£$p", "$", "$£p", "$p", "£p"],
+		"body": [
+            "£\\$p",
+            "\t${1:content}",
+            "\\$£p",
+            "$0"
+		],
+		"description": "paragraph"
+    },
+    "bold": {
+		"prefix": ["£$b", "$£b", "$b", "£b"],
+		"body": [
+            "£\\$b ${1:content} \\$£b $0"
+		],
+		"description": "bold"
+    },
+    "italic": {
+		"prefix": ["£$i", "$£i", "$i", "£i"],
+		"body": [
+            "£\\$i ${1:content} \\$£i $0",
+		],
+		"description": "italic"
+    },
+    "li": {
+		"prefix": ["£$li", "$£li", "$li", "£li"],
+		"body": [
+            "£\\$li ${1:content} \\$£li",
+            "$0"
+		],
+		"description": "li"
+	},
+	"code": {
+		"prefix": ["£$code", "$£code", "$code", "£code"],
+		"body": [
+            "£\\$code ${1:content} \\$£code",
+            "$0"
+		],
+		"description": "li"
+    },
+    "title": {
+		"prefix": ["£$title", "$£title", "$title", "£title"],
+		"body": [
+            "£\\$title:rank:${1:i} ${2:title} \\$£title",
+            "\t$0"
+		],
+		"description": "title"
+    },
+    "img": {
+		"prefix": ["£$img", "$£img", "$img", "£img"],
+		"body": [
+            "£\\$img:path:${1}:border:${2:5} ${3:caption} \\$£img",
+            "$0"
+		],
+		"description": "image"
+	},
+}
